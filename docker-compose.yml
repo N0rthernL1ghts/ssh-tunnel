@@ -38,9 +38,3 @@ services:
 
 networks:
   default:
-
-#volumes:
-#  ssh-key:
-#    driver_opts:
-#      type: none
-#      device: /mnt/ssd_data/xzero/dev/private/ssh-tunnel/id_ed25519
