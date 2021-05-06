@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
+docker pull alpine
+docker pull nlss/ssh-tunnel:latest
 docker build --tag "nlss/ssh-tunnel:latest" .
 docker push --all-tags nlss/ssh-tunnel
