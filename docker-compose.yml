@@ -32,8 +32,8 @@ services:
     networks:
       - default
     volumes:
-      - "/path/to/ssh-key/id_ed25519:/secret/keyfile"
-      - "/path/to/ssh-key/id_ed25519-cert:/secret/keyfile-cert"
+      - "/path/to/ssh-key/id_ed25519:/secret/keyfile:ro"
+      - "/path/to/ssh-key/id_ed25519-cert:/secret/keyfile-cert:ro"
     restart: "always"
 
 networks:
