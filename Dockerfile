@@ -20,3 +20,9 @@ CMD ["/app/tunnel-service"]
 WORKDIR "/app"
 
 USER tunnel
+
+ENV TUNNEL_SERVICE       ""
+ENV SSH_HOST             ""
+ENV SSH_PORT             22
+ENV SSH_USER             root
+ENV SERVICE_EXPOSE_PORT  5100
