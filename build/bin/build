@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+docker build --tag "nlss/ssh-tunnel:latest" .
+docker push --all-tags nlss/ssh-tunnel
