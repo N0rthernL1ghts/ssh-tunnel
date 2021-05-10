@@ -1,4 +1,4 @@
-FROM alpine
+FROM nlss/base-alpine
 
 RUN apk add --update --no-cache openssh-client \
     && adduser --shell /bin/false --disabled-password --gecos "SSH Tunnel User" --home "/app" "tunnel" \
@@ -8,21 +8,16 @@ RUN apk add --update --no-cache openssh-client \
 
 # Copy over rootfs and main script
 COPY ["./rootfs", "/"]
-COPY ["./src/tunnel-service", "/app/"]
 
 RUN mkdir -p /secret \
     && attr /secret/ true tunnel:tunnel 0770 2771 \
     && attr /app/ true tunnel:tunnel 0770 2771
 
-# Setup
-CMD ["/app/tunnel-service"]
-
 WORKDIR "/app"
 
-USER tunnel
-
-ENV TUNNEL_SERVICE       ""
-ENV SSH_HOST             ""
-ENV SSH_PORT             22
-ENV SSH_USER             root
-ENV SERVICE_EXPOSE_PORT  5100
+ENV TUNNEL_SERVICE              ""
+ENV SSH_HOST                    ""
+ENV SSH_PORT                    22
+ENV SSH_USER                    root
+ENV SERVICE_EXPOSE_PORT         5100
+ENV S6_BEHAVIOUR_IF_STAGE2_FAILS 2

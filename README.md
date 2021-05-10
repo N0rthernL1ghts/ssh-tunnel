@@ -6,25 +6,22 @@ Your usual SSH tunnel, but Dockerized
 * Pre-built Alpine based image available on dockerhub as `nlss/ssh-tunnel:latest`
 * You can also clone the repository and build manually
 
-## Important
-This service should be run under PID 1, so make sure to pass flag --init in order for Docker to bootstrap it.
-
 ## Remote SSH Authentication
 Password authentication is not supported at the moment.  
 Daemon will try to fetch SSH key from `/secret` directory, and fail if directory is not present. 
 The simplest method is to mount the file like this:
 ```
-docker run --init (...) -v "/path/to/ssh-key/id_ed25519:/secret/keyfile:ro" nlss/ssh-tunnel
+docker run (...) -v "/path/to/ssh-key/id_ed25519:/secret/keyfile:ro" nlss/ssh-tunnel
 ```
 
 If you need to use certificate:
 ```
-docker run --init (...) -v "/path/to/ssh-key/id_ed25519:/secret/keyfile:ro" -v "/path/to/ssh-key/mycert:/secret/keyfile-cert:ro" nlss/ssh-tunnel
+docker run (...) -v "/path/to/ssh-key/id_ed25519:/secret/keyfile:ro" -v "/path/to/ssh-key/mycert:/secret/keyfile-cert:ro" nlss/ssh-tunnel
 ```
 
 Another way would be to mount complete directory to `/secret` and make sure required files are provided.
 ```
-docker run --init (...) -v "/path/to/my-ssh-secrets:/secret:ro" nlss/ssh-tunnel
+docker run (...) -v "/path/to/my-ssh-secrets:/secret:ro" nlss/ssh-tunnel
 ```
 
 ## Available environment variables

@@ -1,15 +1,10 @@
-#!/usr/bin/env sh
+#!/usr/bin/with-contenv sh
 
 TUNNEL_SERVICE="${TUNNEL_SERVICE:-}"
 REMOTE_SSH_HOST="${SSH_HOST:-}"
 REMOTE_SSH_PORT="${SSH_PORT:-22}"
 REMOTE_SSH_USER="${SSH_USER:-root}"
 SERVICE_EXPOSE_PORT="${SERVICE_EXPOSE_PORT:-5100}"
-
-if [ ! -f "/secret/keyfile" ]; then
-  echo "> Error: Couldn't locate private key file"
-  exit 1
-fi
 
 if [ -z "${TUNNEL_SERVICE}" ]; then
   echo "> Error: Environment variable TUNNEL_SERVICE missing"
@@ -26,15 +21,9 @@ if [ "${SERVICE_EXPOSE_PORT}" -lt 1024 ]; then
   exit 1
 fi
 
-# Prepare ssh keyfile
-cp "/secret/keyfile" "/app/.ssh/keyfile"
-chmod 0600 /app/.ssh/keyfile
-
-if [ -f "/secret/keyfile-cert" ]; then
-  echo "> Certificate file found. Enabling"
-  cp "/secret/keyfile-cert" "/app/.ssh/keyfile-cert"
-  chmod 0600 /app/.ssh/keyfile
-fi
-
 # Start the ssh tunnel process
-/usr/bin/ssh -N -L "0.0.0.0:${SERVICE_EXPOSE_PORT}:${TUNNEL_SERVICE}" "${REMOTE_SSH_USER}@${REMOTE_SSH_HOST}" -p "${REMOTE_SSH_PORT}"
+s6-setuidgid "tunnel" "/usr/bin/ssh" \
+  -N -L \
+  "0.0.0.0:${SERVICE_EXPOSE_PORT}:${TUNNEL_SERVICE}" \
+  "${REMOTE_SSH_USER}@${REMOTE_SSH_HOST}" \
+  -p "${REMOTE_SSH_PORT}"

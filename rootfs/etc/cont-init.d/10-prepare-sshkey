@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+set -e
+
+if [ ! -f "/secret/keyfile" ]; then
+  echo "> Error: Couldn't locate private key file"
+  exit 1
+fi
+
+# Prepare ssh keyfile
+cp "/secret/keyfile" "/app/.ssh/keyfile"
+chmod 0600 /app/.ssh/keyfile
+
+if [ -f "/secret/keyfile-cert" ]; then
+  echo "> Certificate file found. Enabling"
+  cp "/secret/keyfile-cert" "/app/.ssh/keyfile-cert"
+  chmod 0600 "/app/.ssh/keyfile-cert"
+fi
+
+attr /app/ true tunnel:tunnel 0770 2771
+
+exit 0
