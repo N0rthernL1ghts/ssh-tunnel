@@ -1,4 +1,7 @@
-FROM nlss/base-alpine
+ARG ALPINE_VERSION=3.12
+
+FROM --platform=${TARGETPLATFORM} nlss/base-alpine:${ALPINE_VERSION}
+LABEL maintainer="Aleksandar Puharic <aleksandar@puharic.com>"
 
 RUN apk add --update --no-cache openssh-client \
     && adduser --shell /bin/false --disabled-password --gecos "SSH Tunnel User" --home "/app" "tunnel" \
