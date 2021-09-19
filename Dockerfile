@@ -15,9 +15,9 @@ RUN mkdir -p /secret \
 
 WORKDIR "/app"
 
-ENV TUNNEL_SERVICE              ""
-ENV SSH_HOST                    ""
-ENV SSH_PORT                    22
-ENV SSH_USER                    root
-ENV SERVICE_EXPOSE_PORT         5100
+ENV TUNNEL_SERVICE               ""
+ENV SSH_HOST                     ""
+ENV SSH_PORT                     22
+ENV SSH_USER                     root
+ENV SERVICE_EXPOSE_PORT          5100
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS 2
