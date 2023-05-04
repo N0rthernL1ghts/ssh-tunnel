@@ -1,3 +1,5 @@
+ARG ALPINE_VERSION=3.17
+
 FROM scratch AS rootfs
 
 COPY --from=nlss/attr ["/usr/local/bin/attr", "/usr/local/bin/attr"]
@@ -5,7 +7,7 @@ COPY ["./rootfs", "/"]
 
 
 
-ARG ALPINE_VERSION=3.17
+
 FROM --platform=${TARGETPLATFORM} nlss/base-alpine:${ALPINE_VERSION}
 LABEL maintainer="Aleksandar Puharic <aleksandar@puharic.com>"
 
