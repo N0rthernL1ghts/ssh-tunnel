@@ -3,25 +3,29 @@ Your usual SSH tunnel, but Dockerized
 
 ## Installation
 
-* Pre-built Alpine based image available on dockerhub as `nlss/ssh-tunnel:latest`
-* You can also clone the repository and build manually
+Pre-built Alpine based image available
+- `ghcr.io/n0rthernl1ghts/ssh-tunnel:latest`
+ - `nlss/ssh-tunnel:latest` (deprecated)
+
+
+You can also clone the repository and build manually
 
 ## Remote SSH Authentication
 Password authentication is not supported at the moment.  
 Daemon will try to fetch SSH key from `/secret` directory, and fail if directory is not present. 
 The simplest method is to mount the file like this:
 ```
-docker run (...) -v "/path/to/ssh-key/id_ed25519:/secret/keyfile:ro" nlss/ssh-tunnel
+docker run (...) -v "/path/to/ssh-key/id_ed25519:/secret/keyfile:ro" ghcr.io/n0rthernl1ghts/ssh-tunnel:latest
 ```
 
 If you need to use certificate:
 ```
-docker run (...) -v "/path/to/ssh-key/id_ed25519:/secret/keyfile:ro" -v "/path/to/ssh-key/mycert:/secret/keyfile-cert:ro" nlss/ssh-tunnel
+docker run (...) -v "/path/to/ssh-key/id_ed25519:/secret/keyfile:ro" -v "/path/to/ssh-key/mycert:/secret/keyfile-cert:ro" ghcr.io/n0rthernl1ghts/ssh-tunnel:latest
 ```
 
 Another way would be to mount complete directory to `/secret` and make sure required files are provided.
 ```
-docker run (...) -v "/path/to/my-ssh-secrets:/secret:ro" nlss/ssh-tunnel
+docker run (...) -v "/path/to/my-ssh-secrets:/secret:ro" ghcr.io/n0rthernl1ghts/ssh-tunnel:latest
 ```
 
 ## Available environment variables
@@ -63,5 +67,5 @@ MIT
 ## Copyright
 
 ```
-Copyright (c) 2021 Aleksandar Puharic  <https://www.puharic.com>
+Copyright (c) 2023 Aleksandar Puharic  <https://www.puharic.com>
 ```

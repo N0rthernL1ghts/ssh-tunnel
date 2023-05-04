@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   tunnel:
-    image: nlss/ssh-tunnel
+    image: ghcr.io/n0rthernl1ghts/ssh-tunnel:latest
     build:
       context: .
     expose:
