@@ -1,20 +1,10 @@
 #!/usr/bin/with-contenv sh
 
-TUNNEL_SERVICE="${TUNNEL_SERVICE:-}"
-REMOTE_SSH_HOST="${SSH_HOST:-}"
+TUNNEL_SERVICE="${TUNNEL_SERVICE:?TUNNEL_SERVICE is required}"
+REMOTE_SSH_HOST="${SSH_HOST:?REMOTE_SSH_HOST is required}"
 REMOTE_SSH_PORT="${SSH_PORT:-22}"
 REMOTE_SSH_USER="${SSH_USER:-root}"
 SERVICE_EXPOSE_PORT="${SERVICE_EXPOSE_PORT:-5100}"
-
-if [ -z "${TUNNEL_SERVICE}" ]; then
-  echo "> Error: Environment variable TUNNEL_SERVICE missing"
-  exit 1
-fi
-
-if [ -z "${REMOTE_SSH_HOST}" ]; then
-  echo "> Error: Environment variable REMOTE_SSH_HOST missing"
-  exit 1
-fi
 
 # Start the ssh tunnel process
 s6-setuidgid "tunnel" "/usr/bin/ssh" \
