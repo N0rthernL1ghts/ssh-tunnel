@@ -1,4 +1,4 @@
-ARG ALPINE_VERSION=3.12
+ARG ALPINE_VERSION=3.17
 
 FROM --platform=${TARGETPLATFORM} nlss/base-alpine:${ALPINE_VERSION}
 LABEL maintainer="Aleksandar Puharic <aleksandar@puharic.com>"

@@ -80,6 +80,6 @@ target "latest" {
   cache-from = get-cache-from("latest")
   cache-to   = get-cache-to("latest")
   tags       = get-tags("latest", [])
-  args       = get-args("3.12")
+  args       = get-args("3.17")
 }
 
