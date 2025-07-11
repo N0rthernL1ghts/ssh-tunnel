@@ -1,5 +1,3 @@
-ARG ALPINE_VERSION=3.17
-
 FROM scratch AS rootfs
 
 COPY --from=nlss/attr ["/usr/local/bin/attr", "/usr/local/bin/attr"]
@@ -8,7 +6,7 @@ COPY ["./rootfs", "/"]
 
 
 
-FROM --platform=${TARGETPLATFORM} nlss/base-alpine:${ALPINE_VERSION}
+FROM alpine:3.22
 LABEL maintainer="Aleksandar Puharic <aleksandar@puharic.com>"
 
 RUN apk add --update --no-cache openssh-client \
