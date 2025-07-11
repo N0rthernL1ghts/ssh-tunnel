@@ -8,18 +8,18 @@ main() {
 
     echo "Preparing ssh keyfile"
 
-    if [ ! -f "/secret/keyfile" ]; then
+    if [ -z "${SSH_KEY}" ]; then
         echo "Error: Couldn't locate private key file"
         return 1
     fi
 
     # Prepare ssh keyfile
-    cp "/secret/keyfile" "/app/.ssh/keyfile"
+    printf "%s\n" "${SSH_KEY}" >"/app/.ssh/keyfile"
     chmod 0600 /app/.ssh/keyfile
 
-    if [ -f "/secret/keyfile-cert" ]; then
+    if [ -n "${SSH_KEYFILE_CERT}" ]; then
         echo "Certificate file found. Enabling"
-        cp "/secret/keyfile-cert" "/app/.ssh/keyfile-cert"
+        printf "%s\n" "${SSH_KEYFILE_CERT}" >"/app/.ssh/keyfile-cert"
         chmod 0600 "/app/.ssh/keyfile-cert"
     fi
 

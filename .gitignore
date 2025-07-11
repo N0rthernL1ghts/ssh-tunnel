@@ -8,3 +8,10 @@ tmp/nanoc/
 
 # Crash Log
 crash.log
+
+# Data / Secrets
+data/
+secrets/
+
+# Idea
+.idea/
