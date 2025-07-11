@@ -17,7 +17,9 @@ RUN apk add --update --no-cache openssh-client \
 # Copy over rootfs and main script
 COPY --from=rootfs ["/", "/"]
 
-RUN mkdir -p /secret \
+RUN set -eux \
+    && apk add --update --no-cache bash \
+    && mkdir -p /secret \
     && attr /secret/ true tunnel:tunnel 0770 2771 \
     && attr /app/ true tunnel:tunnel 0770 2771
 
