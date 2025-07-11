@@ -1,0 +1,23 @@
+#!/command/with-contenv bash
+# shellcheck shell=bash
+
+# svc-ssh-tunnel main
+main() {
+    # This will prepend service name to all output from here
+    exec > >(while read -r line; do echo "[svc-ssh-tunnel] ${line}"; done) 2>&1
+
+    local remote_service_host="${REMOTE_SERVICE_HOST:?REMOTE_SERVICE_HOST is required}"
+    local remote_service_port="${REMOTE_SERVICE_PORT:?REMOTE_SERVICE_PORT is required}"
+    local remote_ssh_host="${REMOTE_SSH_HOST:?REMOTE_SSH_HOST is required}"
+    local remote_ssh_port="${REMOTE_SSH_PORT:-22}"
+    local remote_ssh_user="${REMOTE_SSH_USER:-root}"
+    local local_service_port="${LOCAL_SERVICE_PORT:-5100}"
+
+    # Start the ssh tunnel process
+    s6-setuidgid "tunnel" "/usr/bin/ssh" \
+        -N -L \
+        "0.0.0.0:${local_service_port}:${remote_service_host}:${remote_service_port}" \
+        "${remote_ssh_user}@${remote_ssh_host}" \
+        -p "${remote_ssh_port}"
+}
+main

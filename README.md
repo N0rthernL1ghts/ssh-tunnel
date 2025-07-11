@@ -31,14 +31,15 @@ docker run (...) -v "/path/to/my-ssh-secrets:/secret:ro" ghcr.io/n0rthernl1ghts/
 ## Available environment variables
 
 ```bash
-TUNNEL_SERVICE      = 127.0.0.1:3306       [Connection is forwarded to this host:port]
-SSH_HOST            = 123.123.123.123      [Remote SSH server]
-SSH_PORT            = 22                   [Remote SSH port]
-SSH_USER            = root                 [Remote SSH user]
-SERVICE_EXPOSE_PORT = 5100                 [Expose forwarded service to this port]
+REMOTE_SERVICE_HOST      = 127.0.0.1       [Connection is forwarded to this host]
+REMOTE_SERVICE_PORT      = 3306            [Connection is forwarded to this port]
+REMOTE_SSH_HOST          = 123.123.123.123 [Remote SSH server]
+REMOTE_SSH_PORT          = 22              [Remote SSH port]
+REMOTE_SSH_USER          = root            [Remote SSH user]
+LOCAL_SERVICE_PORT       = 5100            [Expose forwarded service to this port]
 ```
 
-Required: TUNNEL_SERVICE, SSH_HOST
+Required: REMOTE_SERVICE_HOST, REMOTE_SERVICE_PORT, REMOTE_SSH_HOST
 
 This is default configuration which you would use for tunneling MySQL database.
 TUNNEL_SERVICE

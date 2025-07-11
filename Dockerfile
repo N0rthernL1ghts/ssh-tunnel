@@ -1,8 +1,10 @@
 FROM scratch AS rootfs
 
+COPY --from=ghcr.io/n0rthernl1ghts/s6-rootfs:3.2.0.2  ["/", "/"]
+COPY --from=ghcr.io/n0rthernl1ghts/docker-env-secrets ["/", "/"]
 COPY --from=nlss/attr ["/usr/local/bin/attr", "/usr/local/bin/attr"]
-COPY ["./rootfs", "/"]
 
+COPY ["./rootfs", "/"]
 
 
 
@@ -21,9 +23,12 @@ RUN mkdir -p /secret \
 
 WORKDIR "/app"
 
-ENV TUNNEL_SERVICE               ""
-ENV SSH_HOST                     ""
-ENV SSH_PORT                     22
-ENV SSH_USER                     root
-ENV SERVICE_EXPOSE_PORT          5100
-ENV S6_BEHAVIOUR_IF_STAGE2_FAILS 2
+ENV TUNNEL_SERVICE=""
+ENV SSH_HOST=""
+ENV SSH_PORT=22
+ENV SSH_USER=root
+ENV SERVICE_EXPOSE_PORT=5100
+ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
+
+
+ENTRYPOINT ["/init"]
