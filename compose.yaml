@@ -1,17 +1,22 @@
-version: '3.7'
+networks:
+  default:
 
 services:
   tunnel:
     image: ghcr.io/n0rthernl1ghts/ssh-tunnel:latest
     build:
       context: .
+    deploy:
+      restart_policy:
+        condition: any
     expose:
       - 5100
     environment:
-      SERVICE_EXPOSE_PORT: 5100
-      TUNNEL_SERVICE: 'localhost:3306'
-      SSH_HOST: '123.123.123.123'
-      SSH_PORT: 22
+      LOCAL_SERVICE_PORT: 5100
+      REMOTE_SERVICE_HOST: 'localhost'
+      REMOTE_SERVICE_PORT: 3306
+      REMOTE_SSH_HOST: '123.123.123.123'
+      REMOTE_SSH_PORT: 22
     cap_drop:
       - FSETID
       - KILL
@@ -27,7 +32,3 @@ services:
     volumes:
       - "/path/to/ssh-key/id_ed25519:/secret/keyfile:ro"
       - "/path/to/ssh-key/id_ed25519-cert:/secret/keyfile-cert:ro"
-    restart: "always"
-
-networks:
-  default:
