@@ -25,7 +25,7 @@ secrets:
     file: secrets/ssh_keyfile_cert
 
 services:
-  tunnel:
+  mysql:
     secrets:
       - ssh_keyfile_cert
 ```
@@ -47,8 +47,7 @@ LOCAL_SERVICE_PORT       = 5100            [Expose forwarded service to this por
 
 Required: REMOTE_SERVICE_HOST, REMOTE_SERVICE_PORT, REMOTE_SSH_HOST
 
-This is default configuration which you would use for tunneling MySQL database.
-TUNNEL_SERVICE
+This is default configuration which you would use for tunneling MySQL database. This is only an example.
 
 ## Customize
 By default, tunneled service will be exposed on port 5100, however you can override that with LOCAL_SERVICE_PORT environment variable.

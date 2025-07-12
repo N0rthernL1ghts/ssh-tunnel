@@ -6,7 +6,7 @@ networks:
   default:
 
 services:
-  tunnel:
+  mysql:
     image: ghcr.io/n0rthernl1ghts/ssh-tunnel:latest
     build:
       context: .
@@ -34,4 +34,4 @@ services:
       - AUDIT_WRITE
       - SETFCAP
     networks:
-      - default
+      default:
