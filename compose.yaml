@@ -1,5 +1,5 @@
 secrets:
-  ssh_private_key:
+  ssh_key_mysql:
     file: secrets/ssh_private_key.pem
 
 networks:
@@ -7,7 +7,7 @@ networks:
 
 services:
   mysql:
-    image: ghcr.io/n0rthernl1ghts/ssh-tunnel:latest
+    #image: ghcr.io/n0rthernl1ghts/ssh-tunnel:latest
     build:
       context: .
     deploy:
@@ -22,7 +22,7 @@ services:
       REMOTE_SSH_HOST: '123.123.123.123'
       REMOTE_SSH_PORT: 22
     secrets:
-      - ssh_private_key
+      - ssh_key_mysql
     cap_drop:
       - FSETID
       - KILL

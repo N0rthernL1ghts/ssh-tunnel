@@ -14,24 +14,24 @@ Password authentication is not supported at the moment.
 Daemon will try to fetch SSH key from docker secrets / environment, and fail if not present. 
 The simplest method is to import the file using built-in convenience script:
 ```shell
-bin/import_secret ssh_private_key /path/to/ssh-key/id_ed25519
+bin/import_secret ssh_key_mysql /path/to/ssh-key/id_ed25519
 ```
 
 If you need to use certificate, make sure to add secret entry to `compose.override.yaml`
 
 ```yaml
 secrets:
-  ssh_keyfile_cert:
-    file: secrets/ssh_keyfile_cert
+  ssh_cert_mysql:
+    file: secrets/ssh_keyfile_cert_mysql
 
 services:
   mysql:
     secrets:
-      - ssh_keyfile_cert
+      - ssh_cert_mysql
 ```
 And copy the file to your secrets
 ```shell
-bin/import_secret ssh_keyfile_cert /path/to/ssh-key/your_cert
+bin/import_secret ssh_cert_mysql /path/to/ssh-key/your_cert
 ```
 
 ## Available environment variables

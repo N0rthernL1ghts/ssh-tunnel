@@ -1,28 +1,69 @@
 #!/command/with-contenv bash
 # shellcheck shell=bash
 
+printf_err() {
+    printf '%s\n' "$@" >&2
+}
+
+extract_partial_var() {
+    local var_expression="${1:?}"
+    local ssh_key
+    local first_match
+
+    while IFS='=' read -r key value; do
+        printf "Analyzing match '%s'\n" "${key}"
+
+        if [[ -z ${value} ]]; then
+            printf_err "Rejected '%s' because it's empty\n" "${key}"
+            continue
+        fi
+
+        if [[ -n "${first_match}" ]]; then
+            printf_err "Warning: Found another match '%s' with '%s' expression. However, only first one '%s' can be used.\n" "${key}" "${var_expression}" "${first_match}"
+            continue
+        fi
+
+        # Save
+        ssh_key="${value}"
+        first_match="${key}"
+    done < <(printenv | grep "${var_expression}")
+
+    if [[ -z "${first_match}" ]]; then
+        return 1
+    fi
+
+    local target_file="${2:?}"
+
+    printf "Using key '%s' and saving to file %s\n" "${first_match}" "${target_file}"
+
+    printf "%s\n" "${ssh_key}" >"${target_file}"
+    chmod 0600 "${target_file}"
+}
+
+extract_key() {
+    extract_partial_var '^SSH_KEY_' "${@}"
+}
+
+extract_cert() {
+    extract_partial_var '^SSH_CERT_' "${@}"
+}
+
 # init-prepare-ssh-keys main
 main() {
     # This will prepend service name to all output from here
     exec > >(while read -r line; do echo "[init-prepare-ssh-keys] ${line}"; done) 2>&1
 
-    echo "Preparing ssh keyfile"
+    printf "Preparing ssh keyfile\n"
 
-    if [ -z "${SSH_PRIVATE_KEY}" ]; then
-        echo "Error: Couldn't load private key file"
+    if ! extract_key "/app/.ssh/keyfile"; then
+        printf_err "Error: Couldn't load private key file\n"
         return 1
     fi
 
-    echo "Private ssh key file loaded"
+    printf "Private ssh key file loaded\n"
 
-    # Prepare ssh keyfile
-    printf "%s\n" "${SSH_PRIVATE_KEY}" >"/app/.ssh/keyfile"
-    chmod 0600 /app/.ssh/keyfile
-
-    if [ -n "${SSH_KEYFILE_CERT}" ]; then
-        echo "Certificate file found. Enabling"
-        printf "%s\n" "${SSH_KEYFILE_CERT}" >"/app/.ssh/keyfile-cert"
-        chmod 0600 "/app/.ssh/keyfile-cert"
+    if extract_cert "/app/.ssh/keyfile-cert"; then
+        printf "Certificate file found. Enabling\n"
     fi
 
     attr /app/ true tunnel:tunnel 0770 2771
