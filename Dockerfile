@@ -11,16 +11,14 @@ COPY ["./rootfs", "/"]
 FROM alpine:3.22
 LABEL maintainer="Aleksandar Puharic <aleksandar@puharic.com>"
 
-RUN apk add --update --no-cache openssh-client \
-    && adduser --shell /bin/false --disabled-password --gecos "SSH Tunnel User" --home "/app" "tunnel"
+RUN apk add --update --no-cache bash openssh-client \
+    && adduser --shell /bin/false --disabled-password --gecos "SSH Tunnel User" --home "/app" "tunnel" \
+    && apk add --update --no-cache bash
 
 # Copy over rootfs and main script
 COPY --from=rootfs ["/", "/"]
 
 RUN set -eux \
-    && apk add --update --no-cache bash \
-    && mkdir -p /secret \
-    && attr /secret/ true tunnel:tunnel 0770 2771 \
     && attr /app/ true tunnel:tunnel 0770 2771
 
 WORKDIR "/app"
