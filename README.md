@@ -5,27 +5,33 @@ Your usual SSH tunnel, but Dockerized
 
 Pre-built Alpine based image available
 - `ghcr.io/n0rthernl1ghts/ssh-tunnel:latest`
- - `nlss/ssh-tunnel:latest` (deprecated)
 
 
 You can also clone the repository and build manually
 
 ## Remote SSH Authentication
 Password authentication is not supported at the moment.  
-Daemon will try to fetch SSH key from `/secret` directory, and fail if directory is not present. 
-The simplest method is to mount the file like this:
-```
-docker run (...) -v "/path/to/ssh-key/id_ed25519:/secret/keyfile:ro" ghcr.io/n0rthernl1ghts/ssh-tunnel:latest
-```
-
-If you need to use certificate:
-```
-docker run (...) -v "/path/to/ssh-key/id_ed25519:/secret/keyfile:ro" -v "/path/to/ssh-key/mycert:/secret/keyfile-cert:ro" ghcr.io/n0rthernl1ghts/ssh-tunnel:latest
+Daemon will try to fetch SSH key from docker secrets / environment, and fail if not present. 
+The simplest method is to import the file using built-in convenience script:
+```shell
+bin/import_secret ssh_private_key /path/to/ssh-key/id_ed25519
 ```
 
-Another way would be to mount complete directory to `/secret` and make sure required files are provided.
+If you need to use certificate, make sure to add secret entry to `compose.override.yaml`
+
+```yaml
+secrets:
+  ssh_keyfile_cert:
+    file: secrets/ssh_keyfile_cert
+
+services:
+  tunnel:
+    secrets:
+      - ssh_keyfile_cert
 ```
-docker run (...) -v "/path/to/my-ssh-secrets:/secret:ro" ghcr.io/n0rthernl1ghts/ssh-tunnel:latest
+And copy the file to your secrets
+```shell
+bin/import_secret ssh_keyfile_cert /path/to/ssh-key/your_cert
 ```
 
 ## Available environment variables
@@ -45,10 +51,10 @@ This is default configuration which you would use for tunneling MySQL database.
 TUNNEL_SERVICE
 
 ## Customize
-By default, tunneled service will be exposed on port 5100, however you can override that with SERVICE_EXPOSE_PORT environment variable.
+By default, tunneled service will be exposed on port 5100, however you can override that with LOCAL_SERVICE_PORT environment variable.
 
 ## Security
-This service works well even in very restricted environment, so feel free to drop all privileges as done in docker-compose.yml
+This service works well even in very restricted environment, so feel free to drop all privileges as done in `compose.yaml`
 
 ## Contributing
 

@@ -8,13 +8,15 @@ main() {
 
     echo "Preparing ssh keyfile"
 
-    if [ -z "${SSH_KEY}" ]; then
-        echo "Error: Couldn't locate private key file"
+    if [ -z "${SSH_PRIVATE_KEY}" ]; then
+        echo "Error: Couldn't load private key file"
         return 1
     fi
 
+    echo "Private ssh key file loaded"
+
     # Prepare ssh keyfile
-    printf "%s\n" "${SSH_KEY}" >"/app/.ssh/keyfile"
+    printf "%s\n" "${SSH_PRIVATE_KEY}" >"/app/.ssh/keyfile"
     chmod 0600 /app/.ssh/keyfile
 
     if [ -n "${SSH_KEYFILE_CERT}" ]; then

@@ -1,13 +1,13 @@
 secrets:
-  ssh_key:
-    file: secrets/ssh_key.pem
+  ssh_private_key:
+    file: secrets/ssh_private_key.pem
 
 networks:
   default:
 
 services:
   tunnel:
-    #image: ghcr.io/n0rthernl1ghts/ssh-tunnel:latest
+    image: ghcr.io/n0rthernl1ghts/ssh-tunnel:latest
     build:
       context: .
     deploy:
@@ -22,7 +22,7 @@ services:
       REMOTE_SSH_HOST: '123.123.123.123'
       REMOTE_SSH_PORT: 22
     secrets:
-      - ssh_key
+      - ssh_private_key
     cap_drop:
       - FSETID
       - KILL
@@ -35,6 +35,3 @@ services:
       - SETFCAP
     networks:
       - default
-    volumes:
-      - "/path/to/ssh-key/id_ed25519:/secret/keyfile:ro"
-      - "/path/to/ssh-key/id_ed25519-cert:/secret/keyfile-cert:ro"
