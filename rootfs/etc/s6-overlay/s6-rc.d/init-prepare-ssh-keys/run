@@ -10,9 +10,10 @@ extract_partial_var() {
     local ssh_key
     local first_match
 
-    while IFS='=' read -r key value; do
+    while IFS= read -r key; do
         printf "Analyzing match '%s'\n" "${key}"
-
+        
+        local value="${!key}"
         if [[ -z ${value} ]]; then
             printf_err "Rejected '%s' because it's empty\n" "${key}"
             continue
@@ -26,7 +27,7 @@ extract_partial_var() {
         # Save
         ssh_key="${value}"
         first_match="${key}"
-    done < <(printenv | grep "${var_expression}")
+    done < <(printenv | grep "${var_expression}" | cut -d'=' -f1)
 
     if [[ -z "${first_match}" ]]; then
         return 1
