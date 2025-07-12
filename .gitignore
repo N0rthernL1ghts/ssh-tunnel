@@ -15,3 +15,6 @@ secrets/
 
 # Idea
 .idea/
+
+# Compose override
+compose.override.yaml
