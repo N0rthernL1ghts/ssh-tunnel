@@ -8,7 +8,7 @@ COPY ["./rootfs", "/"]
 
 
 
-FROM alpine:3.22
+FROM alpine:3.23
 LABEL maintainer="Aleksandar Puharic <aleksandar@puharic.com>"
 
 RUN apk add --update --no-cache bash openssh-client \
